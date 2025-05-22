@@ -1,9 +1,9 @@
 # GMS2Cleaner
 GameMaker Studio 2 Sprite Cleaner. Remove duplicate and Ghost sprite files from project folders.
 
-================= \\\\\\\ GMS2Cleaner ///// ============
+================= \\\\\ GMS2Cleaner /// ============
 
-============ \\\\\\\ by NeonaTrinity 2025  ///// ============
+============ \\\\\ by NeonaTrinity 2025  /// ============
 
 **** PLEASE BACKUP YOUR PROJECT BEFORE USING THIS TOOL. ****
 
@@ -13,7 +13,7 @@ project size by thousands of unused sprites. This can increase read/write speed,
  when uploading your projects to git or creating .zip files.
 improves clarity in sprite folders.
 
-============ \\\\\  Buttons  ///// ============
+============ \\\\\  Buttons  /// ============
 
 "Theme": Toggles Dark mode, 
 "Font +" : increase font size, 
@@ -26,7 +26,7 @@ from project to a trash folder in GMS2Cleaner folder instead.
 
 "Select .ypp": locate the gamemaker .ypp file
 
-========== \\\\\ QUICK CLEAR ///// ============
+========== \\\\\ QUICK CLEAR /// ============
 
 QUICK AND DIRTY
 
@@ -39,7 +39,7 @@ select clear all layers.
 done.
 
 
-========== \\\\\ Instructions ///// ============
+========== \\\\\ Instructions /// ============
 
 1. Run GMS2Cleaner.exe
 
