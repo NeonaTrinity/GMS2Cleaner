@@ -12,7 +12,7 @@ from gms2_cleaner_theme_module import ThemeManager
 class GMS2Cleaner:
     def __init__(self, root):
         self.root = root
-        self.root.title("GMS2Cleaner")
+        self.root.title("GMS2 Sprite Cleaner")
         self.project_path = None
         self.project_name = ""
         self.sprite_data = {}
@@ -39,6 +39,7 @@ class GMS2Cleaner:
         Button(top, text="Scan Project", command=self.scan_project).pack(side=LEFT)
         Button(top, text="Scan Layers", command=self.scan_layers).pack(side=LEFT)
         Button(top, text="Delete", command=self.delete_selected).pack(side=LEFT)
+        Button(top, text="Clear All Sprites", command=self.clear_all_sprites).pack(side=LEFT)
         Checkbutton(top, text="Backup Deletes", variable=self.backup_enabled).pack(side=LEFT)
         Button(top, text="Theme", command=self.theme_mgr.toggle_dark_mode).pack(side=LEFT)
         Button(top, text="Font +", command=self.theme_mgr.increase_font).pack(side=LEFT)
@@ -48,7 +49,7 @@ class GMS2Cleaner:
         self.progress = ttk.Progressbar(self.root, orient="horizontal", mode="determinate")
         self.progress.pack(fill=X, padx=5, pady=2)
 
-        self.folder_listbox = Listbox(self.root, font=("Arial", self.theme_mgr.font_size), width=30)  # Increased width
+        self.folder_listbox = Listbox(self.root, font=("Arial", self.theme_mgr.font_size), width=30)
         self.folder_listbox.pack(side=LEFT, fill=Y, padx=5)
         self.folder_listbox.bind("<<ListboxSelect>>", self.load_selected_folder)
 
@@ -141,7 +142,7 @@ class GMS2Cleaner:
             "clean_folders": sum(1 for f in self.sprite_data if not self.sprite_data[f]["sprites"] and (f not in self.layer_data or not self.layer_data[f]["unused_folders"])),
             "flagged_folders": sum(1 for f in self.sprite_data if self.sprite_data[f]["sprites"] or (f in self.layer_data and self.layer_data[f]["unused_folders"])),
             "unused_files": sum(len(self.sprite_data[f]["sprites"]) + (len(self.layer_data[f]["unused_folders"]) if f in self.layer_data else 0) for f in self.sprite_data),
-            "delete_all": self.delete_all_flagged,
+            "clear_all_sprites": self.clear_all_sprites,
             "undo": self.undo_last
         }
         total_bytes = sum(size for f in self.sprite_data for _, _, size in self.sprite_data[f]["sprites"])
@@ -171,19 +172,30 @@ class GMS2Cleaner:
                                 self.layer_data[folder]["unused_folders"][i] = (subfolder, folder_path, [(name, p, size) for name, p, size in pngs if p != path])
                         # Remove empty folders
                         self.layer_data[folder]["unused_folders"] = [(subfolder, folder_path, pngs) for subfolder, folder_path, pngs in self.layer_data[folder]["unused_folders"] if pngs or os.path.exists(folder_path)]
+            # Advance listbox selection
+            current_sel = self.folder_listbox.curselection()
+            if current_sel:
+                current_index = current_sel[0]
+                next_index = min(current_index + 1, self.folder_listbox.size() - 1)
+                self.folder_listbox.selection_clear(0, END)
+                self.folder_listbox.selection_set(next_index)
+                self.folder_listbox.see(next_index)
+                next_folder = self.folder_listbox.get(next_index).split(" (")[0]
+                self.selected_folder = next_folder
             # Refresh GUI
             if self.selected_folder:
                 load_folder_contents(self.selected_folder, self.inner_frame, self.file_vars, self.sprite_data, self.layer_data, self.file_sizes, self.image_label, mode=self.display_mode)
             populate_folder_list(self.folder_listbox, self.sprite_data, self.layer_data)
 
-    def delete_all_flagged(self):
+    def clear_all_sprites(self):
         file_paths = [path for f in self.sprite_data for _, path, _ in self.sprite_data[f]["sprites"]]
         if not file_paths:
             self.log_panel.log("No unused sprite files to delete.", "info")
+            messagebox.showinfo("Info", "No unused sprite files to delete.")
             return
-        if messagebox.askyesno("Confirm", f"Delete {len(file_paths)} unused sprite files?"):
+        if messagebox.askyesno("Confirm Delete All Sprites", f"This will delete {len(file_paths)} unused sprite files.\nBack up your files first!\nContinue?"):
             deleted = delete_files(file_paths, self.trash_dir, self.project_name, self.backup_enabled.get(), self.backup_dir)
-            self.log_panel.log(f"Deleted {len(deleted)} unused sprite files.", "error")
+            self.log_panel.log(f"Deleted {len(deleted)} unused sprite files.", "warn")
             # Update sprite_data
             for f in self.sprite_data:
                 self.sprite_data[f]["sprites"] = []
