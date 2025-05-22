@@ -25,6 +25,18 @@ from project to a trash folder in GMS2Cleaner folder instead.
 
 "Select .ypp": locate the gamemaker .ypp file
 
+========== \\\\\ QUICK CLEAR ///// ============
+
+QUICK AND DIRTY
+
+Scan Project.
+select clear all sprites.
+
+Scan Layers.
+select clear all layers.
+
+done.
+
 
 ========== \\\\\ Instructions ///// ============
 
@@ -39,8 +51,14 @@ from project to a trash folder in GMS2Cleaner folder instead.
 5. Wait for scan to complete. Loading bar will display the status.
    Summary Log will display the results when complete.
 
-6. 
+6. sprites will appear on the left side with (ok) next to them, 
+	or (# Unused.) Select a sprite folder with unused .png
+
+7. check the boxes [x] next to unused/duplicate or ghost sprites
+
+8. Select delete.
+
+*****if sprite displays "sprite preview not available" close and reopen the program.
 
 
-
-if sprite displays "sprite preview not available" close and reopen the program.
+Thank you for using GMS2Cleaner. Support NeonaTrinity @ 

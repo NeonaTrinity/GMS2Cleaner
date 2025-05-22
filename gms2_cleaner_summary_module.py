@@ -23,6 +23,7 @@ def show_summary_popup(root, stats, unused_total_size, trash_path, backup_path, 
     button_frame.pack(fill="x", pady=5)
 
     tk.Button(button_frame, text="Clear All Sprites", command=stats['clear_all_sprites']).pack(side="left", padx=5)
+    tk.Button(button_frame, text="Clear All Layers", command=stats['clear_all_layers']).pack(side="left", padx=5)
     tk.Button(button_frame, text="Undo Last Delete", command=stats['undo']).pack(side="left", padx=5)
 
     if backup_path:

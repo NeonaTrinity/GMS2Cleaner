@@ -12,7 +12,7 @@ from gms2_cleaner_theme_module import ThemeManager
 class GMS2Cleaner:
     def __init__(self, root):
         self.root = root
-        self.root.title("GMS2 Sprite Cleaner")
+        self.root.title("GMS2Cleaner")
         self.project_path = None
         self.project_name = ""
         self.sprite_data = {}
@@ -25,7 +25,7 @@ class GMS2Cleaner:
 
         self.backup_enabled = BooleanVar(value=True)
         self.trash_dir = os.path.join(os.getcwd(), "_GMS2Cleaner_Trash")
-        self.backup_dir = os.path.expanduser("~/Documents/GMS2_Cleaner_Backups")
+        self.backup_dir = os.path.expanduser("~/Documents/GMS2Cleaner_Backups")
 
         self.log_panel = LogPanel(self.root)
         self.theme_mgr = ThemeManager(self.root, self.apply_theme)
@@ -40,6 +40,7 @@ class GMS2Cleaner:
         Button(top, text="Scan Layers", command=self.scan_layers).pack(side=LEFT)
         Button(top, text="Delete", command=self.delete_selected).pack(side=LEFT)
         Button(top, text="Clear All Sprites", command=self.clear_all_sprites).pack(side=LEFT)
+        Button(top, text="Clear All Layers", command=self.clear_all_layers).pack(side=LEFT)
         Checkbutton(top, text="Backup Deletes", variable=self.backup_enabled).pack(side=LEFT)
         Button(top, text="Theme", command=self.theme_mgr.toggle_dark_mode).pack(side=LEFT)
         Button(top, text="Font +", command=self.theme_mgr.increase_font).pack(side=LEFT)
@@ -143,6 +144,7 @@ class GMS2Cleaner:
             "flagged_folders": sum(1 for f in self.sprite_data if self.sprite_data[f]["sprites"] or (f in self.layer_data and self.layer_data[f]["unused_folders"])),
             "unused_files": sum(len(self.sprite_data[f]["sprites"]) + (len(self.layer_data[f]["unused_folders"]) if f in self.layer_data else 0) for f in self.sprite_data),
             "clear_all_sprites": self.clear_all_sprites,
+            "clear_all_layers": self.clear_all_layers,
             "undo": self.undo_last
         }
         total_bytes = sum(size for f in self.sprite_data for _, _, size in self.sprite_data[f]["sprites"])
@@ -199,6 +201,23 @@ class GMS2Cleaner:
             # Update sprite_data
             for f in self.sprite_data:
                 self.sprite_data[f]["sprites"] = []
+            # Refresh GUI
+            if self.selected_folder:
+                load_folder_contents(self.selected_folder, self.inner_frame, self.file_vars, self.sprite_data, self.layer_data, self.file_sizes, self.image_label, mode=self.display_mode)
+            populate_folder_list(self.folder_listbox, self.sprite_data, self.layer_data)
+
+    def clear_all_layers(self):
+        file_paths = [folder_path for f in self.layer_data for _, folder_path, _ in self.layer_data[f]["unused_folders"]]
+        if not file_paths:
+            self.log_panel.log("No unused layer folders to delete.", "info")
+            messagebox.showinfo("Info", "No unused layer folders to delete.")
+            return
+        if messagebox.askyesno("Confirm Delete All Layers", f"This will delete {len(file_paths)} unused layer folders.\nBack up your files first!\nContinue?"):
+            deleted = delete_files(file_paths, self.trash_dir, self.project_name, self.backup_enabled.get(), self.backup_dir)
+            self.log_panel.log(f"Deleted {len(deleted)} unused layer folders.", "warn")
+            # Update layer_data
+            for f in self.layer_data:
+                self.layer_data[f]["unused_folders"] = []
             # Refresh GUI
             if self.selected_folder:
                 load_folder_contents(self.selected_folder, self.inner_frame, self.file_vars, self.sprite_data, self.layer_data, self.file_sizes, self.image_label, mode=self.display_mode)
