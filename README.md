@@ -3,7 +3,7 @@ GameMaker Studio 2 Sprite Cleaner. Remove duplicate and Ghost sprite files from 
 
 ======= \\\\\ GMS2Cleaner /// ============
 
-==== \\\\\ by NeonaTrinity 2025  /// ============
+==== \\\\\ by NeonaTrinity 2025  /// ======
 
 **** PLEASE BACKUP YOUR PROJECT BEFORE USING THIS TOOL. ****
 
