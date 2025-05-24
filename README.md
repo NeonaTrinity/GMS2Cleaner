@@ -71,5 +71,6 @@ Thank you for using GMS2Cleaner.
 
 Follow and Support NeonaTrinity.
 
-https://github.com/NeonaTrinity
 https://x.com/NeonaTrinity
+
+https://github.com/NeonaTrinity
