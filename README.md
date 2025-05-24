@@ -33,8 +33,6 @@ from project to a trash folder in GMS2Cleaner folder instead.
 
 ========== \\\\\ QUICK CLEAR /// ============
 
-QUICK AND DIRTY
-
 Scan Project.
 select clear all sprites.
 
