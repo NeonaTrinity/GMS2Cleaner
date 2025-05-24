@@ -15,11 +15,14 @@ project size by thousands of unused sprites. This can increase read/write speed,
  when uploading your projects to git or creating .zip files.
 improves clarity in sprite folders.
 
-============ \\\\\  Buttons  /// ============
+============ \\\\\  UI Buttons  /// ============
 
-"Theme": Toggles Dark mode, 
-"Font +" : increase font size, 
-"Font - ": decrease font size,
+"Theme": Toggles Dark mode.
+
+"Font +" : increase font size.
+
+"Font - ": decrease font size.
+
 "Toggle Log": displays the scan log visual. toggle on or off.
 
 *Recommended*
