@@ -28,6 +28,7 @@ improves clarity in sprite folders.
 *Recommended*
 [X] "Backup Deletes": Safety feature; moves selected sprites
 from project to a trash folder in GMS2Cleaner folder instead.
+Delete Folder after the project opens without conflict.
 
 "Select .ypp": locate the gamemaker .ypp file
 
